@@ -25,11 +25,11 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::你的AWS账号ID:role/GitHubActionsWorkflowRole # 替换为你刚才复制的角色 ARN
+          role-to-assume: arn:aws:iam::718314448652:role/GitHubActionsWorkflowRoleTestZsl # 替换为你刚才复制的角色 ARN
           aws-region: us-east-1 # 替换为你的 S3 所在的 Region
           audience: sts.amazonaws.com
 
       # 验证步骤：测试是否有权限操作 S3
       - name: Upload file to S3
         run: |
-          aws s3 cp test-file.txt s3://你的S3存储桶名称/ # 替换为你的 S3 Bucket 名字
+          aws s3 cp test-file.txt s3://zsl-create-by-tf-2026/ # 替换为你的 S3 Bucket 名字
