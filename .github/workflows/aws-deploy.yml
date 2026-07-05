@@ -1,0 +1,35 @@
+name: AWS OIDC Test
+
+on:
+  push:
+    branches:
+      - main  # 只有向 main 分支推送代码时触发
+
+# 关键：必须显式赋予 id-token 的写权限，GitHub 才会为该流水线生成 OIDC JWT 令牌
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  S3UploadTest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Create a dummy file
+        run: |
+          echo "Hello AWS OIDC! Hello 2026!" > test-file.txt
+
+      # 核心步骤：使用官方 Action，通过 OIDC 换取 AWS 临时凭证
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::你的AWS账号ID:role/GitHubActionsWorkflowRole # 替换为你刚才复制的角色 ARN
+          aws-region: us-east-1 # 替换为你的 S3 所在的 Region
+          audience: sts.amazonaws.com
+
+      # 验证步骤：测试是否有权限操作 S3
+      - name: Upload file to S3
+        run: |
+          aws s3 cp test-file.txt s3://你的S3存储桶名称/ # 替换为你的 S3 Bucket 名字
