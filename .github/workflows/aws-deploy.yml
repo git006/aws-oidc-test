@@ -19,7 +19,7 @@ jobs:
 
       - name: Create a dummy file
         run: |
-          echo "Hello AWS OIDC! Hello 2026!" > test-file.txt
+          echo "Hello AWS OIDC! Hello 2026! another test from dev branch" > test-file.txt
 
       # 核心步骤：使用官方 Action，通过 OIDC 换取 AWS 临时凭证
       - name: Configure AWS Credentials via OIDC
